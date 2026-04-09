@@ -483,9 +483,7 @@ export default function Index() {
                 <h3 className="font-playfair font-bold text-2xl mb-2" style={{ color: "var(--dark-brown)" }}>
                   {genre.name}
                 </h3>
-                <p className="font-oswald text-sm uppercase tracking-widest" style={{ color: "var(--sepia)" }}>
-                  {genre.count} пластинок
-                </p>
+
                 <div
                   className="mt-4 flex items-center gap-2 font-oswald text-xs uppercase tracking-wide opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{ color: "var(--amber)" }}
