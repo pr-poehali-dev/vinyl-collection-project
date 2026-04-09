@@ -89,18 +89,7 @@ function RecordCard({ record, delay = 0 }: { record: typeof RECORDS[0]; delay?: 
         animationFillMode: "forwards",
       }}
     >
-      <div className="relative aspect-square overflow-hidden">
-        <img
-          src={record.cover}
-          alt={record.title}
-          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-        />
-        <div className="absolute top-3 right-3">
-          <span className={`px-2 py-0.5 rounded text-xs font-oswald uppercase tracking-wide ${CONDITION_COLORS[record.condition] || "bg-gray-700 text-gray-100"}`}>
-            {record.condition}
-          </span>
-        </div>
-      </div>
+
       <div className="p-4">
         <div className="font-oswald text-xs uppercase tracking-widest mb-1" style={{ color: "var(--sepia)" }}>
           {record.genre} · {record.year}
@@ -236,10 +225,7 @@ export default function Index() {
         <div>
           {/* Hero */}
           <section className="relative overflow-hidden" style={{ minHeight: "85vh" }}>
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${RECORDS[1].cover})` }}
-            />
+
             <div
               className="absolute inset-0"
               style={{ background: "linear-gradient(135deg, rgba(26,15,7,0.93) 0%, rgba(44,26,14,0.78) 60%, rgba(92,58,30,0.45) 100%)" }}
