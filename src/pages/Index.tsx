@@ -1,126 +1,18 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const RECORDS = [
-  {
-    id: 1,
-    title: "Kind of Blue",
-    artist: "Miles Davis",
-    year: 1959,
-    genre: "Джаз",
-    price: "3 200 ₽",
-    condition: "VG+",
-    cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/files/33eb30d3-fa62-467e-b860-e192c4f8f2de.jpg",
-  },
-  {
-    id: 2,
-    title: "Abbey Road",
-    artist: "The Beatles",
-    year: 1969,
-    genre: "Рок",
-    price: "4 800 ₽",
-    condition: "NM",
-    cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/files/c40ca6ad-98da-47ba-bfef-0050d8bd7993.jpg",
-  },
-  {
-    id: 3,
-    title: "Rumours",
-    artist: "Fleetwood Mac",
-    year: 1977,
-    genre: "Поп-рок",
-    price: "2 900 ₽",
-    condition: "VG",
-    cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/files/faed310b-1cdf-49f8-b5da-1f878787be0d.jpg",
-  },
-  {
-    id: 4,
-    title: "A Love Supreme",
-    artist: "John Coltrane",
-    year: 1965,
-    genre: "Джаз",
-    price: "5 100 ₽",
-    condition: "NM",
-    cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/files/33eb30d3-fa62-467e-b860-e192c4f8f2de.jpg",
-  },
-  {
-    id: 5,
-    title: "Led Zeppelin IV",
-    artist: "Led Zeppelin",
-    year: 1971,
-    genre: "Рок",
-    price: "3 600 ₽",
-    condition: "VG+",
-    cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/files/c40ca6ad-98da-47ba-bfef-0050d8bd7993.jpg",
-  },
-  {
-    id: 6,
-    title: "Thriller",
-    artist: "Michael Jackson",
-    year: 1982,
-    genre: "Поп",
-    price: "2 400 ₽",
-    condition: "VG",
-    cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/files/faed310b-1cdf-49f8-b5da-1f878787be0d.jpg",
-  },
-];
-
 const GENRES = [
-  { name: "Рок", count: 134, icon: "🎸" },
-  { name: "Классика", count: 67, icon: "🎻" },
-  { name: "Поп", count: 91, icon: "🎶" },
+  { name: "Рок", icon: "🎸" },
+  { name: "Классика", icon: "🎻" },
+  { name: "Поп", icon: "🎶" },
 ];
-
-const CONDITION_COLORS: Record<string, string> = {
-  NM: "bg-green-800 text-green-100",
-  "VG+": "bg-amber-700 text-amber-100",
-  VG: "bg-yellow-700 text-yellow-100",
-};
 
 type Section = "home" | "catalog" | "genres" | "contacts";
 
-function RecordCard({ record, delay = 0 }: { record: typeof RECORDS[0]; delay?: number }) {
-  return (
-    <div
-      className="card-hover border overflow-hidden animate-fade-in-up opacity-0 cursor-pointer"
-      style={{
-        backgroundColor: "var(--parchment)",
-        borderColor: "var(--sepia)",
-        animationDelay: `${delay}ms`,
-        animationFillMode: "forwards",
-      }}
-    >
-
-      <div className="p-4">
-        <div className="font-oswald text-xs uppercase tracking-widest mb-1" style={{ color: "var(--sepia)" }}>
-          {record.genre} · {record.year}
-        </div>
-        <h3 className="font-playfair font-bold text-lg leading-tight mb-0.5" style={{ color: "var(--dark-brown)" }}>
-          {record.title}
-        </h3>
-        <p className="font-cormorant italic text-base mb-3" style={{ color: "var(--warm-brown)" }}>
-          {record.artist}
-        </p>
-
-      </div>
-    </div>
-  );
-}
-
 export default function Index() {
   const [activeSection, setActiveSection] = useState<Section>("home");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeGenre, setActiveGenre] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const filteredRecords = RECORDS.filter((r) => {
-    const matchSearch =
-      !searchQuery ||
-      r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.artist.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchGenre = !activeGenre || r.genre === activeGenre;
-    return matchSearch && matchGenre;
-  });
 
   const navItems: { key: Section; label: string }[] = [
     { key: "home", label: "Главная" },
@@ -225,10 +117,9 @@ export default function Index() {
         <div>
           {/* Hero */}
           <section className="relative overflow-hidden" style={{ minHeight: "85vh" }}>
-
             <div
               className="absolute inset-0"
-              style={{ background: "linear-gradient(135deg, rgba(26,15,7,0.93) 0%, rgba(44,26,14,0.78) 60%, rgba(92,58,30,0.45) 100%)" }}
+              style={{ background: "linear-gradient(135deg, rgba(26,15,7,1) 0%, rgba(44,26,14,0.95) 60%, rgba(92,58,30,0.85) 100%)" }}
             />
 
             {/* Decorative vinyl disc */}
@@ -321,29 +212,6 @@ export default function Index() {
             </div>
           </section>
 
-          {/* Featured */}
-          <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="ornament-line mb-10">
-              <h2 className="font-playfair font-bold text-3xl text-center" style={{ color: "var(--dark-brown)", whiteSpace: "nowrap" }}>
-                Новые поступления
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {RECORDS.slice(0, 3).map((r, i) => (
-                <RecordCard key={r.id} record={r} delay={i * 100} />
-              ))}
-            </div>
-            <div className="text-center mt-10">
-              <button
-                onClick={() => setActiveSection("catalog")}
-                className="font-oswald uppercase tracking-widest text-sm px-8 py-3 border-2 transition-all duration-300 hover:scale-105"
-                style={{ borderColor: "var(--warm-brown)", color: "var(--warm-brown)", backgroundColor: "transparent" }}
-              >
-                Смотреть весь каталог
-              </button>
-            </div>
-          </section>
-
           {/* CTA Banner */}
           <section className="py-16 text-center" style={{ backgroundColor: "var(--dark-brown)" }}>
             <div className="max-w-2xl mx-auto px-6">
@@ -371,76 +239,23 @@ export default function Index() {
       {/* CATALOG */}
       {activeSection === "catalog" && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-          <div className="mb-10">
-            <div className="ornament-line mb-4">
-              <h1 className="font-playfair font-bold text-4xl text-center" style={{ color: "var(--dark-brown)", whiteSpace: "nowrap" }}>
-                Каталог
-              </h1>
-            </div>
-            <p className="font-cormorant text-lg text-center" style={{ color: "var(--warm-brown)" }}>
-              {RECORDS.length} пластинок в коллекции
-            </p>
+          <div className="ornament-line mb-10">
+            <h1 className="font-playfair font-bold text-4xl text-center" style={{ color: "var(--dark-brown)", whiteSpace: "nowrap" }}>
+              Каталог
+            </h1>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <Icon
-                name="Search"
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2"
-                style={{ color: "var(--sepia)" } as React.CSSProperties}
-              />
-              <input
-                type="text"
-                placeholder="Поиск по названию или исполнителю..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-3 border font-cormorant text-base focus:outline-none"
-                style={{ backgroundColor: "var(--parchment)", borderColor: "var(--sepia)", color: "var(--dark-brown)" }}
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mb-8">
+          <p className="font-cormorant text-lg text-center" style={{ color: "var(--warm-brown)" }}>
+            Свяжитесь с нами, чтобы узнать о наличии пластинок
+          </p>
+          <div className="text-center mt-8">
             <button
-              onClick={() => setActiveGenre(null)}
-              className="font-oswald text-xs uppercase tracking-wide px-4 py-2 border transition-all"
-              style={{
-                borderColor: "var(--sepia)",
-                backgroundColor: !activeGenre ? "var(--warm-brown)" : "transparent",
-                color: !activeGenre ? "var(--cream)" : "var(--warm-brown)",
-              }}
+              onClick={() => setActiveSection("contacts")}
+              className="font-oswald uppercase tracking-widest text-sm px-8 py-3 transition-all duration-300 hover:scale-105"
+              style={{ backgroundColor: "var(--warm-brown)", color: "var(--cream)" }}
             >
-              Все жанры
+              Связаться с нами
             </button>
-            {GENRES.map((g) => (
-              <button
-                key={g.name}
-                onClick={() => setActiveGenre(activeGenre === g.name ? null : g.name)}
-                className="font-oswald text-xs uppercase tracking-wide px-4 py-2 border transition-all"
-                style={{
-                  borderColor: "var(--sepia)",
-                  backgroundColor: activeGenre === g.name ? "var(--warm-brown)" : "transparent",
-                  color: activeGenre === g.name ? "var(--cream)" : "var(--warm-brown)",
-                }}
-              >
-                {g.icon} {g.name}
-              </button>
-            ))}
           </div>
-
-          {filteredRecords.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="text-4xl mb-4">🎵</div>
-              <p className="font-cormorant text-xl" style={{ color: "var(--warm-brown)" }}>Пластинки не найдены</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredRecords.map((r, i) => (
-                <RecordCard key={r.id} record={r} delay={i * 50} />
-              ))}
-            </div>
-          )}
         </div>
       )}
 
@@ -454,10 +269,9 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {GENRES.map((genre, i) => (
-              <button
+              <div
                 key={genre.name}
-                onClick={() => { setActiveGenre(genre.name); setActiveSection("catalog"); }}
-                className="card-hover text-left p-8 border-2 relative overflow-hidden group animate-fade-in-up opacity-0"
+                className="card-hover text-left p-8 border-2 animate-fade-in-up opacity-0"
                 style={{
                   backgroundColor: "var(--parchment)",
                   borderColor: "var(--sepia)",
@@ -466,17 +280,10 @@ export default function Index() {
                 }}
               >
                 <div className="text-4xl mb-4">{genre.icon}</div>
-                <h3 className="font-playfair font-bold text-2xl mb-2" style={{ color: "var(--dark-brown)" }}>
+                <h3 className="font-playfair font-bold text-2xl" style={{ color: "var(--dark-brown)" }}>
                   {genre.name}
                 </h3>
-
-                <div
-                  className="mt-4 flex items-center gap-2 font-oswald text-xs uppercase tracking-wide opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ color: "var(--amber)" }}
-                >
-                  Смотреть <Icon name="ArrowRight" size={14} />
-                </div>
-              </button>
+              </div>
             ))}
           </div>
         </div>
