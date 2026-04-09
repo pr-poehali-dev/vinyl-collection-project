@@ -2,11 +2,11 @@ import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const GENRES = [
-  { name: "Рок", icon: "🎸" },
-  { name: "Классика", icon: "🎻" },
-  { name: "Поп", icon: "🎶" },
-  { name: "Серии", icon: "🗂️" },
-  { name: "Сборники", icon: "📀" },
+  { name: "Рок", icon: "🎸", records: [] },
+  { name: "Классика", icon: "🎻", records: [] },
+  { name: "Поп", icon: "🎶", records: [] },
+  { name: "Серии", icon: "🗂️", records: ["Музыкальный телетайп 2"] },
+  { name: "Сборники", icon: "📀", records: [] },
 ];
 
 type Section = "home" | "catalog" | "genres" | "contacts";
@@ -282,9 +282,18 @@ export default function Index() {
                 }}
               >
                 <div className="text-4xl mb-4">{genre.icon}</div>
-                <h3 className="font-playfair font-bold text-2xl" style={{ color: "var(--dark-brown)" }}>
+                <h3 className="font-playfair font-bold text-2xl mb-3" style={{ color: "var(--dark-brown)" }}>
                   {genre.name}
                 </h3>
+                {genre.records.length > 0 && (
+                  <ul className="flex flex-col gap-1">
+                    {genre.records.map((r) => (
+                      <li key={r} className="font-cormorant text-base flex items-center gap-2" style={{ color: "var(--warm-brown)" }}>
+                        <span style={{ color: "var(--sepia)" }}>—</span> {r}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </div>
