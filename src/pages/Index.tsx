@@ -2,17 +2,20 @@ import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const GENRES = [
-  { name: "Рок", icon: "🎸", records: [] },
-  { name: "Классика", icon: "🎻", records: [] },
-  { name: "Поп", icon: "🎶", records: [] },
-  { name: "Серии", icon: "🗂️", records: ["Музыкальный телетайп 2"] },
-  { name: "Сборники", icon: "📀", records: [] },
+  { name: "Рок", icon: "🎸", records: [] as { title: string; cover?: string }[] },
+  { name: "Классика", icon: "🎻", records: [] as { title: string; cover?: string }[] },
+  { name: "Поп", icon: "🎶", records: [] as { title: string; cover?: string }[] },
+  { name: "Серии", icon: "🗂️", records: [
+    { title: "Музыкальный телетайп 2", cover: "" },
+  ]},
+  { name: "Сборники", icon: "📀", records: [] as { title: string; cover?: string }[] },
 ];
 
 type Section = "home" | "catalog" | "genres" | "contacts";
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState<Section>("home");
+  const [activeGenrePage, setActiveGenrePage] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -23,6 +26,12 @@ export default function Index() {
     { key: "contacts", label: "Контакты" },
   ];
 
+  const goTo = (section: Section) => {
+    setActiveSection(section);
+    setActiveGenrePage(null);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--cream)", color: "var(--dark-brown)" }}>
       {/* Header */}
@@ -31,7 +40,7 @@ export default function Index() {
         style={{ backgroundColor: "var(--groove)", borderColor: "var(--sepia)" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-          <button onClick={() => setActiveSection("home")} className="flex items-center gap-3">
+          <button onClick={() => goTo("home")} className="flex items-center gap-3">
             <div
               className="w-9 h-9 rounded-full border-2 flex items-center justify-center"
               style={{ borderColor: "var(--amber)", backgroundColor: "#111" }}
@@ -52,7 +61,7 @@ export default function Index() {
             {navItems.map((item) => (
               <button
                 key={item.key}
-                onClick={() => setActiveSection(item.key)}
+                onClick={() => goTo(item.key)}
                 className="font-oswald text-sm uppercase tracking-wider px-4 py-2 transition-all duration-200 rounded"
                 style={{
                   color: activeSection === item.key ? "var(--amber)" : "var(--parchment)",
@@ -100,7 +109,7 @@ export default function Index() {
             {navItems.map((item) => (
               <button
                 key={item.key}
-                onClick={() => { setActiveSection(item.key); setMobileMenuOpen(false); }}
+                onClick={() => goTo(item.key)}
                 className="font-oswald text-sm uppercase tracking-wider px-3 py-2 text-left rounded"
                 style={{
                   color: activeSection === item.key ? "var(--amber)" : "var(--parchment)",
@@ -173,14 +182,14 @@ export default function Index() {
                   style={{ animationDelay: "0.5s", animationFillMode: "forwards" }}
                 >
                   <button
-                    onClick={() => setActiveSection("catalog")}
+                    onClick={() => goTo("catalog")}
                     className="font-oswald uppercase tracking-widest text-sm px-8 py-3 transition-all duration-300 hover:scale-105"
                     style={{ backgroundColor: "var(--amber)", color: "var(--groove)" }}
                   >
                     Открыть каталог
                   </button>
                   <button
-                    onClick={() => setActiveSection("genres")}
+                    onClick={() => goTo("genres")}
                     className="font-oswald uppercase tracking-widest text-sm px-8 py-3 border transition-all duration-300 hover:scale-105"
                     style={{ borderColor: "var(--parchment)", color: "var(--parchment)", backgroundColor: "transparent" }}
                   >
@@ -227,7 +236,7 @@ export default function Index() {
                 Принимаем пластинки на комиссию и выкупаем коллекции. Честная оценка и быстрый расчёт.
               </p>
               <button
-                onClick={() => setActiveSection("contacts")}
+                onClick={() => goTo("contacts")}
                 className="font-oswald uppercase tracking-widest text-sm px-8 py-3 transition-all duration-300 hover:scale-105"
                 style={{ backgroundColor: "var(--amber)", color: "var(--groove)" }}
               >
@@ -251,7 +260,7 @@ export default function Index() {
           </p>
           <div className="text-center mt-8">
             <button
-              onClick={() => setActiveSection("contacts")}
+              onClick={() => goTo("contacts")}
               className="font-oswald uppercase tracking-widest text-sm px-8 py-3 transition-all duration-300 hover:scale-105"
               style={{ backgroundColor: "var(--warm-brown)", color: "var(--cream)" }}
             >
@@ -261,8 +270,8 @@ export default function Index() {
         </div>
       )}
 
-      {/* GENRES */}
-      {activeSection === "genres" && (
+      {/* GENRES — список жанров */}
+      {activeSection === "genres" && !activeGenrePage && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           <div className="ornament-line mb-10">
             <h1 className="font-playfair font-bold text-4xl text-center" style={{ color: "var(--dark-brown)", whiteSpace: "nowrap" }}>
@@ -271,34 +280,102 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {GENRES.map((genre, i) => (
-              <div
+              <button
                 key={genre.name}
-                className="card-hover text-left p-8 border-2 animate-fade-in-up opacity-0"
+                onClick={() => genre.records.length > 0 ? setActiveGenrePage(genre.name) : null}
+                className="text-left p-8 border-2 animate-fade-in-up opacity-0 transition-all duration-300"
                 style={{
                   backgroundColor: "var(--parchment)",
-                  borderColor: "var(--sepia)",
+                  borderColor: genre.records.length > 0 ? "var(--amber)" : "var(--sepia)",
                   animationDelay: `${i * 100}ms`,
                   animationFillMode: "forwards",
+                  cursor: genre.records.length > 0 ? "pointer" : "default",
+                  transform: "translateY(0)",
                 }}
+                onMouseEnter={e => { if (genre.records.length > 0) (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
               >
                 <div className="text-4xl mb-4">{genre.icon}</div>
-                <h3 className="font-playfair font-bold text-2xl mb-3" style={{ color: "var(--dark-brown)" }}>
+                <h3 className="font-playfair font-bold text-2xl mb-1" style={{ color: "var(--dark-brown)" }}>
                   {genre.name}
                 </h3>
                 {genre.records.length > 0 && (
-                  <ul className="flex flex-col gap-1">
-                    {genre.records.map((r) => (
-                      <li key={r} className="font-cormorant text-base flex items-center gap-2" style={{ color: "var(--warm-brown)" }}>
-                        <span style={{ color: "var(--sepia)" }}>—</span> {r}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="flex items-center gap-1 font-oswald text-xs uppercase tracking-wide mt-2" style={{ color: "var(--amber)" }}>
+                    {genre.records.length} пластинок <Icon name="ArrowRight" size={13} />
+                  </div>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </div>
       )}
+
+      {/* GENRES — страница жанра */}
+      {activeSection === "genres" && activeGenrePage && (() => {
+        const genre = GENRES.find(g => g.name === activeGenrePage);
+        if (!genre) return null;
+        return (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+            <button
+              onClick={() => setActiveGenrePage(null)}
+              className="flex items-center gap-2 font-oswald text-sm uppercase tracking-wide mb-8 transition-opacity hover:opacity-70"
+              style={{ color: "var(--warm-brown)" }}
+            >
+              <Icon name="ArrowLeft" size={16} /> Все жанры
+            </button>
+            <div className="ornament-line mb-10">
+              <h1 className="font-playfair font-bold text-4xl text-center" style={{ color: "var(--dark-brown)", whiteSpace: "nowrap" }}>
+                {genre.icon} {genre.name}
+              </h1>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {genre.records.map((record, i) => (
+                <div
+                  key={record.title}
+                  className="border-2 overflow-hidden animate-fade-in-up opacity-0"
+                  style={{
+                    backgroundColor: "var(--parchment)",
+                    borderColor: "var(--sepia)",
+                    animationDelay: `${i * 100}ms`,
+                    animationFillMode: "forwards",
+                  }}
+                >
+                  {record.cover ? (
+                    <img src={record.cover} alt={record.title} className="w-full aspect-square object-cover" />
+                  ) : (
+                    <div
+                      className="w-full aspect-square flex flex-col items-center justify-center gap-3"
+                      style={{ backgroundColor: "var(--dark-brown)" }}
+                    >
+                      <div
+                        className="w-24 h-24 rounded-full border-4 flex items-center justify-center"
+                        style={{
+                          background: "repeating-radial-gradient(circle at center, #111 0px, #222 2px, #111 4px)",
+                          borderColor: "#333",
+                        }}
+                      >
+                        <div className="w-6 h-6 rounded-full" style={{ backgroundColor: "var(--warm-brown)" }}>
+                          <div className="w-full h-full rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 rounded-full bg-gray-900" />
+                          </div>
+                        </div>
+                      </div>
+                      <span className="font-oswald text-xs uppercase tracking-widest" style={{ color: "var(--sepia)" }}>
+                        Фото скоро
+                      </span>
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-playfair font-bold text-lg" style={{ color: "var(--dark-brown)" }}>
+                      {record.title}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* CONTACTS */}
       {activeSection === "contacts" && (
@@ -407,7 +484,7 @@ export default function Index() {
             {navItems.map((item) => (
               <button
                 key={item.key}
-                onClick={() => setActiveSection(item.key)}
+                onClick={() => goTo(item.key)}
                 className="font-oswald text-xs uppercase tracking-wide transition-colors hover:opacity-80"
                 style={{ color: "var(--sepia)" }}
               >
