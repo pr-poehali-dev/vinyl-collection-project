@@ -65,11 +65,8 @@ const RECORDS = [
 ];
 
 const GENRES = [
-  { name: "Джаз", count: 48, icon: "🎺" },
   { name: "Рок", count: 134, icon: "🎸" },
   { name: "Классика", count: 67, icon: "🎻" },
-  { name: "Блюз", count: 39, icon: "🎵" },
-  { name: "Соул", count: 52, icon: "🎤" },
   { name: "Поп", count: 91, icon: "🎶" },
 ];
 
