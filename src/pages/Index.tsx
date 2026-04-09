@@ -114,17 +114,12 @@ function RecordCard({ record, delay = 0 }: { record: typeof RECORDS[0]; delay?: 
         <p className="font-cormorant italic text-base mb-3" style={{ color: "var(--warm-brown)" }}>
           {record.artist}
         </p>
-        <div className="flex items-center justify-between">
-          <span className="font-playfair font-bold text-xl" style={{ color: "var(--amber)" }}>
-            {record.price}
-          </span>
-          <button
-            className="font-oswald text-xs uppercase tracking-wide px-4 py-2 transition-all hover:scale-105"
-            style={{ backgroundColor: "var(--warm-brown)", color: "var(--cream)" }}
-          >
-            В корзину
-          </button>
-        </div>
+        <button
+          className="w-full font-oswald text-xs uppercase tracking-wide px-4 py-2 transition-all hover:scale-105"
+          style={{ backgroundColor: "var(--warm-brown)", color: "var(--cream)" }}
+        >
+          В корзину
+        </button>
       </div>
     </div>
   );
