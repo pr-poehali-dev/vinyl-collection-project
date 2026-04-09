@@ -6,7 +6,7 @@ const GENRES = [
   { name: "Классика", icon: "🎻", records: [] as { title: string; cover?: string }[] },
   { name: "Поп", icon: "🎶", records: [] as { title: string; cover?: string }[] },
   { name: "Серии", icon: "🗂️", records: [
-    { title: "Музыкальный телетайп 2", cover: "" },
+    { title: "Музыкальный телетайп 2", cover: "https://cdn.poehali.dev/projects/75f66409-36e2-4598-917f-5eae8560968c/bucket/22e7ac31-8823-4bfa-ba5a-be8416f8acd8.jpg" },
   ]},
   { name: "Сборники", icon: "📀", records: [] as { title: string; cover?: string }[] },
 ];
