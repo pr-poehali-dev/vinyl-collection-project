@@ -5,6 +5,8 @@ const GENRES = [
   { name: "Рок", icon: "🎸" },
   { name: "Классика", icon: "🎻" },
   { name: "Поп", icon: "🎶" },
+  { name: "Серии", icon: "🗂️" },
+  { name: "Сборники", icon: "📀" },
 ];
 
 type Section = "home" | "catalog" | "genres" | "contacts";
